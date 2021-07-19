@@ -121,6 +121,35 @@ describe('WebSocket server configuration', () => {
     );
   });
 
+  describe('Pings', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    test('Connection should be terminated if client does not respond to pings', async () => {
+      const wsServer = makeWebSocketServer(wsHandler);
+      const mockClient = new MockClient(wsServer);
+
+      await mockClient.connect();
+      jest.advanceTimersByTime(31_000);
+
+      expect(mockClient.wasConnectionClosed).toBeTrue();
+    });
+
+    test('Connection should be kept if client responds to pings', async () => {
+      const wsServer = makeWebSocketServer(wsHandler);
+      const mockClient = new MockClient(wsServer);
+
+      await mockClient.connect();
+      jest.advanceTimersByTime(31_000);
+
+      expect(mockClient.wasConnectionClosed).toBeFalse();
+    });
+  });
+
   async function wsHandler(connectionStream: Duplex, socket: WebSocket): Promise<void> {
     socket.on('message', (message) => {
       connectionStream.write(message);
