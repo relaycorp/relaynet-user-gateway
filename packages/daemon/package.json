@@ -12,7 +12,7 @@
   },
   "private": "true",
   "dependencies": {
-    "@relaycorp/cogrpc": "^1.3.16",
+    "@relaycorp/cogrpc": "^1.3.17",
     "@relaycorp/keystore-db": "^1.0.1",
     "@relaycorp/relaynet-core": "^1.48.1",
     "@relaycorp/relaynet-poweb": "^1.6.2",
